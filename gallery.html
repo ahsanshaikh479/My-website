@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gallery | APSIS Hyderabad</title>
+    <meta name="description" content="Photo gallery of Army Public School for International Studies, Hyderabad.">
+    <link href="vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="topbar">
+        <div class="container d-flex justify-content-between"><span><i class="bi bi-envelope me-2"></i>info.apsishyd@gmail.com</span><span><i class="bi bi-telephone me-2"></i>0319-3709706</span></div>
+    </div>
+    <nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm">
+        <div class="container"><a class="navbar-brand d-flex align-items-center gap-2" href="index.html"><img src="images/logo.png" class="logo"><span><strong>APSIS</strong><small>Army Public School for International Studies</small></span></a><button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav ms-auto">
+                    <li><a class="nav-link" href="index.html">Home</a></li>
+                    <li><a class="nav-link" href="about.html">About Us</a></li>
+                    <li><a class="nav-link" href="academics.html">Academics</a></li>
+                    <li><a class="nav-link" href="faculty.html">Faculty</a></li>
+                    <!-- <li><a class="nav-link" href="campus-life.html">Campus Life</a></li> -->
+                    <li><a class="nav-link active" href="gallery.html">Gallery</a></li>
+                    <!-- <li><a class="nav-link" href="news.html">News & Events</a></li> -->
+                    <li><a class="btn btn-gold px-4 ms-lg-2" href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="page-banner">
+        <div class="container">
+            <div class="section-label light">GALLERY</div>
+            <h1>Moments at APSIS</h1>
+            <p>Memories from our school events, celebrations and activities.</p>
+        </div>
+    </div>
+    <section class="section-pad">
+        <div class="container">
+            <div class="section-heading text-center">
+                <div class="section-label">PHOTO ALBUMS</div>
+                <h2>Our School <span>Events</span></h2>
+                <p>Select an event to view its photographs.</p>
+            </div>
+            <div class="row g-4 mt-3" id="eventGrid"></div>
+        </div>
+    </section>
+    <div class="modal fade" id="albumModal" tabindex="-1" aria-labelledby="albumTitle" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content album-modal">
+                <div class="modal-header border-0">
+                    <div>
+                        <div class="section-label light mb-1">PHOTO ALBUM</div>
+                        <h5 class="modal-title" id="albumTitle"></h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <div id="albumCarousel" class="carousel slide album-carousel" data-bs-ride="false" data-bs-interval="false">
+                        <div class="carousel-inner" id="albumSlides"></div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#albumCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#albumCarousel" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button>
+                    </div>
+                    <div class="album-counter" id="albumCounter"></div>
+                    <div class="album-thumbs" id="albumThumbs"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer></footer>
+    <script src="js/main.js"></script>
+    <script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script>
+    /* ===== ADD / EDIT EVENTS HERE =====
+   title  : event name shown on the card
+   folder : folder inside images/gallery/
+   images : file names inside that folder (first image = card cover)
+   To add an event, copy one { ... } block below and change it. */
+    const EVENTS = [{
+            "title": "Annual Sports Day",
+            "folder": "images/gallery/sports-day",
+            "images": [
+                "1.jpg",
+                "2.jpg",
+                "3.jpg",
+                "4.jpg",
+                "5.jpg"
+            ]
+        },
+        {
+            "title": "Independence Day Celebration",
+            "folder": "images/gallery/independence-day",
+            "images": [
+                "1.jpg",
+                "2.jpg",
+                "3.jpg",
+                "4.jpg",
+                "5.jpg"
+            ]
+        },
+        {
+            "title": "Science Exhibition",
+            "folder": "images/gallery/science-exhibition",
+            "images": [
+                "1.jpg",
+                "2.jpg",
+                "3.jpg",
+                "4.jpg"
+            ]
+        },
+        {
+            "title": "Annual Prize Distribution",
+            "folder": "images/gallery/prize-distribution",
+            "images": [
+                "1.jpg",
+                "2.jpg",
+                "3.jpg",
+                "4.jpg"
+            ]
+        },
+        {
+            "title": "Art & Craft Competition",
+            "folder": "images/gallery/art-competition",
+            "images": [
+                "1.jpg",
+                "2.jpg",
+                "3.jpg",
+                "4.jpg",
+                "5.jpg"
+            ]
+        },
+        {
+            "title": "Parents' Day",
+            "folder": "images/gallery/parents-day",
+            "images": [
+                "1.jpg",
+                "2.jpg",
+                "3.jpg",
+                "4.jpg"
+            ]
+        }
+    ];
+
+    (function() {
+        var grid = document.getElementById('eventGrid');
+        var modalEl = document.getElementById('albumModal');
+        var carEl = document.getElementById('albumCarousel');
+        var slides = document.getElementById('albumSlides');
+        var thumbs = document.getElementById('albumThumbs');
+        var counter = document.getElementById('albumCounter');
+        var title = document.getElementById('albumTitle');
+        var total = 0;
+
+        function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+
+        grid.innerHTML = EVENTS.map(function(ev, i) {
+            var cover = ev.folder + '/' + ev.images[0];
+            return '<div class="col-md-6 col-lg-4"><button type="button" class="event-card" data-event="' + i + '" aria-label="Open ' + esc(ev.title) + ' photos">' +
+                '<span class="event-cover"><img src="' + esc(cover) + '" alt="' + esc(ev.title) + '" loading="lazy">' +
+                '<span class="event-count"><i class="bi bi-images me-1"></i>' + ev.images.length + ' Photos</span>' +
+                '<span class="event-hover"><i class="bi bi-zoom-in"></i><span>View Album</span></span></span>' +
+                '<span class="event-body"><span class="date">PHOTO ALBUM</span><h3>' + esc(ev.title) + '</h3></span></button></div>';
+        }).join('');
+
+        function updateCounter(idx) {
+            counter.textContent = (idx + 1) + ' / ' + total;
+            [].forEach.call(thumbs.children, function(t, k) { t.classList.toggle('active', k === idx); });
+            var a = thumbs.children[idx];
+            if (a && a.scrollIntoView) a.scrollIntoView({ block: 'nearest', inline: 'center' });
+        }
+
+        grid.addEventListener('click', function(e) {
+            var btn = e.target.closest('.event-card');
+            if (!btn) return;
+            var ev = EVENTS[+btn.getAttribute('data-event')];
+            total = ev.images.length;
+            title.textContent = ev.title;
+            slides.innerHTML = ev.images.map(function(f, k) {
+                return '<div class="carousel-item' + (k === 0 ? ' active' : '') + '"><img src="' + esc(ev.folder + '/' + f) + '" alt="' + esc(ev.title) + ' - photo ' + (k + 1) + '"></div>';
+            }).join('');
+            thumbs.innerHTML = ev.images.map(function(f, k) {
+                return '<button type="button" class="' + (k === 0 ? 'active' : '') + '" data-slide="' + k + '" aria-label="Photo ' + (k + 1) + '"><img src="' + esc(ev.folder + '/' + f) + '" alt=""></button>';
+            }).join('');
+            carEl.classList.toggle('single', total < 2);
+            thumbs.style.display = total < 2 ? 'none' : '';
+            updateCounter(0);
+            bootstrap.Carousel.getOrCreateInstance(carEl, { interval: false, ride: false, wrap: true, touch: true });
+            bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        });
+
+        thumbs.addEventListener('click', function(e) {
+            var b = e.target.closest('button');
+            if (!b) return;
+            bootstrap.Carousel.getOrCreateInstance(carEl).to(+b.getAttribute('data-slide'));
+        });
+        carEl.addEventListener('slid.bs.carousel', function(e) { updateCounter(e.to); });
+        modalEl.addEventListener('hidden.bs.modal', function() { slides.innerHTML = '';
+            thumbs.innerHTML = ''; });
+    })();
+    </script>
+</body>
+
+</html>
